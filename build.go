@@ -42,20 +42,6 @@ func (b *Builder) Build(p *Params) {
 			"build", "-i",
 		}
 		if os.Getenv("GO111MODULE") == "on" {
-			log.Println("Go modules enabled. Running `go mod vendor`...")
-			cmd, err := runCommand("go", "mod", "vendor")
-			if err != nil {
-				log.Fatalf("Could not run `go mod vendor` command: %v", err)
-				continue
-			}
-			if err := cmd.Wait(); err != nil {
-				if err := interpretError(err); err != nil {
-					color.Red("An error occurred while building: %s", err)
-				} else {
-					color.Red("A build error occurred. Please update your code...")
-				}
-				continue
-			}
 			params = append(params, "-mod=vendor")
 		}
 		params = append(params, []string{"-o", fileName, pkg}...)
